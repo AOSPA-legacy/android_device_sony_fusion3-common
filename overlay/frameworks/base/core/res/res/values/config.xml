@@ -88,7 +88,7 @@
     <bool name="config_intrusiveBatteryLed">true</bool>
 
     <!-- Can we change the battery color? -->
-    <bool name="config_multiColorBatteryLed">true</bool>
+    <bool name="config_multiColorBatteryLed">false</bool>
 
     <!-- Base "touch slop" value used by ViewConfiguration as a
          movement threshold where scrolling should begin. -->
