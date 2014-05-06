@@ -150,10 +150,7 @@ PRODUCT_PACKAGES += \
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
-    e2fsck \
-    mount.exfat \
-    fsck.exfat \
-    mkfs.exfat
+    e2fsck
 
 # We have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
