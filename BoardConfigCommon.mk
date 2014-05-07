@@ -182,6 +182,7 @@ BOARD_SEPOLICY_UNION += \
     tee.te \
     thermald.te \
     ueventd.te \
+    vold.te \
     wpa_supplicant.te
 
 BOARD_HARDWARE_CLASS := device/sony/fusion3-common/cmhw
