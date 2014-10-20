@@ -18,6 +18,8 @@ include device/sony/common/BoardConfigCommon.mk
 # inherit from qcom-common
 include device/sony/qcom-common/BoardConfigCommon.mk
 
+BOARD_EGL_CFG := device/sony/fusion3-common/rootdir/system/lib/egl/egl.cfg
+
 TARGET_SPECIFIC_HEADER_PATH := device/sony/fusion3-common/include
 
 # Kernel properties
