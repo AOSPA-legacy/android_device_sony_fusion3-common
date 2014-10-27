@@ -18,6 +18,11 @@ bin/ta_qmi_client
 bin/thermald
 bin/usbhub
 bin/usbhub_init
+etc/firmware/a225p5_pm4.fw
+etc/firmware/a225_pfp.fw
+etc/firmware/a225_pm4.fw
+etc/firmware/a300_pfp.fw
+etc/firmware/a300_pm4.fw
 etc/firmware/acdb.mbn
 etc/firmware/dxhdcp2.b00
 etc/firmware/dxhdcp2.b01
@@ -193,14 +198,12 @@ vendor/camera/SOI13BS2.dat
 vendor/camera/SOI13BS2_DW9735.dat
 vendor/camera/SOI13BS2_IMX135.dat
 vendor/camera/SOI13BS9.dat
-vendor/firmware/a300_pfp.fw
-vendor/firmware/a300_pm4.fw
-vendor/lib/egl/eglsubAndroid.so \
-vendor/lib/egl/libEGL_adreno.so \
-vendor/lib/egl/libGLESv1_CM_adreno.so \
-vendor/lib/egl/libGLESv2S3D_adreno.so \
-vendor/lib/egl/libGLESv2_adreno.so \
-vendor/lib/egl/libq3dtools_adreno.so \
+vendor/lib/egl/eglsubAndroid.so
+vendor/lib/egl/libEGL_adreno.so
+vendor/lib/egl/libGLESv1_CM_adreno.so
+vendor/lib/egl/libGLESv2S3D_adreno.so
+vendor/lib/egl/libGLESv2_adreno.so
+vendor/lib/egl/libq3dtools_adreno.so
 vendor/lib/libadreno_utils.so
 vendor/lib/libc2d2_a3xx.so
 vendor/lib/libC2D2.so
@@ -221,3 +224,5 @@ vendor/lib/libqmi_csi.so
 vendor/lib/libqmi_encdec.so
 vendor/lib/libsc-a2xx.so
 vendor/lib/libsc-a3xx.so
+vendor/media/LMspeed_508.emd
+vendor/media/PFFprec_600.emd
