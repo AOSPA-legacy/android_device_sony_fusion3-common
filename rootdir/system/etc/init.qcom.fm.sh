@@ -73,7 +73,7 @@ case $mode in
         logi "default transport case "
      ;;
     esac
-        /system/bin/fm_qsoc_patches $version 0
+      /system/bin/fm_qsoc_patches $version 0
      ;;
   "wa_enable")
    /system/bin/fm_qsoc_patches $version 1

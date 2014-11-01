@@ -24,8 +24,8 @@ on early-init
 on init
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage/emulated 0555 root root
-    mkdir /mnt/media_rw/sdcard1 0555 root root
-    mkdir /mnt/media_rw/usbdisk 0555 root root
+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbdisk 0700 media_rw media_rw
     mkdir /storage/sdcard1 0775 system system
     mkdir /storage/usbdisk 0775 system system
 
@@ -63,7 +63,7 @@ on fs
     chown system system /lta-label
     chmod 0555 /lta-label
 
-    chmod 0775 /data/etc
+    chmod 0755 /data/etc
     start tad
     exec /sbin/wait4tad_static
     exec /system/bin/taimport
@@ -92,12 +92,10 @@ on early-boot
     exec /system/bin/sh /system/etc/pre_hw_config.sh
 
     write /sys/devices/platform/msm_hsic_host/override_wakelock 0
-    write /sys/module/pm8921_charger/parameters/eoc_bat_fet_close 1
     # Start the offline charging (This blocks booting further in some cases)
     exec /system/bin/chargemon
-    write /sys/module/pm8921_charger/parameters/eoc_bat_fet_close 0
     write /sys/devices/platform/msm_hsic_host/override_wakelock 1
-    write /sys/module/pm8921_charger/parameters/enable_lowbatt_detect 1
+    write /sys/module/pm8921_bms/parameters/enable_lowbatt_detect 1
 
 on boot
     exec /system/bin/btnvtool -O

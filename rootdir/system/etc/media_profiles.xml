@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (C) 2010 The Android Open Source Project
+     Copyright (C) 2012 Sony Mobile Communications AB.
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -12,6 +13,9 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
+
+     NOTE: This file has been modified by Sony Ericsson Mobile Communications AB /
+     Sony Mobile Communications AB. Modifications are licensed under the License.
 -->
 <!DOCTYPE MediaSettings [
 <!ELEMENT MediaSettings (CamcorderProfiles,
@@ -90,7 +94,7 @@
 -->
 <MediaSettings>
     <!-- Each camcorder profile defines a set of predefined configuration parameters -->
-    <CamcorderProfiles cameraId="0" startOffsetMs="300" >
+    <CamcorderProfiles cameraId="0" startOffsetMs="430" >
         <!--
         Profiles for the back camera
         -->
@@ -359,7 +363,7 @@
         minChannels="1" maxChannels="1" />
 
   <AudioEncoderCap name="amrwb" enabled="true"
-        minBitRate="6600" maxBitRate="23850"
+        minBitRate="6600" maxBitRate="23050"
         minSampleRate="16000" maxSampleRate="16000"
         minChannels="1" maxChannels="1" />
 
@@ -376,8 +380,6 @@
         for TEST applications. For other applications, we do
         not perform any checks at all.
     -->
-    <VideoDecoderCap name="wmv" enabled="false"/>
-    <AudioDecoderCap name="wma" enabled="false"/>
 
     <VideoEditorCap maxInputFrameWidth="1920"
         maxInputFrameHeight="1088" maxOutputFrameWidth="1920"
