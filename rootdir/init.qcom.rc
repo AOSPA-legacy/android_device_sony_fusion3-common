@@ -1,5 +1,6 @@
 #
 # Copyright 2012 The Android Open Source Project
+# Copyright (C) 2013 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +20,8 @@ import init.sony.usb.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
-    symlink /data/tombstones /tombstones
+    chown system system /sys/kernel/debug/kgsl/proc
+    write /sys/block/mmcblk0/queue/scheduler noop
 
 on init
     mkdir /mnt/shell/emulated 0700 shell shell
@@ -68,11 +70,7 @@ on fs
     exec /sbin/wait4tad_static
     exec /system/bin/taimport
 
-    restorecon /data/etc/bluetooth_bdaddr
-    restorecon /data/etc/wlan_macaddr0
-    restorecon /data/etc/wlan_macaddr1
-    restorecon /data/etc/wlan_macaddr2
-    restorecon /data/etc/wlan_macaddr3
+    restorecon -R /data/etc
     restorecon /data/misc/audio/mbhc.bin
     restorecon /data/misc/audio/wcd9310_anc.bin
     restorecon /cache/qcks/acdb.bin
@@ -170,6 +168,18 @@ on boot
     # For bridgemgr daemon to inform the USB driver of the correct transport
     chown radio radio /sys/class/android_usb/f_rmnet_smd_sdio/transport
 
+    # For setting tcp delayed ack
+    chown system system /sys/kernel/ipv4/tcp_delack_seg
+    chown system system /sys/kernel/ipv4/tcp_use_userconfig
+
+    # Define TCP delayed ack settings for WiFi & LTE
+    setprop net.tcp.delack.default     1
+    setprop net.tcp.delack.wifi        20
+    setprop net.tcp.delack.lte         8
+    setprop net.tcp.usercfg.default    0
+    setprop net.tcp.usercfg.wifi       1
+    setprop net.tcp.usercfg.lte        1
+
     chmod 660 /dev/rtc0
     chown system system /dev/rtc0
 
@@ -232,12 +242,10 @@ on post-fs-data
     write /sys/devices/platform/wcnss_wlan.0/serial_number ${ro.serialno}
     write /dev/wcnss_wlan 1
 
-    mkdir /data/tombstones 0771 system system
-    mkdir /tombstones/modem 0771 system system
-    mkdir /tombstones/lpass 0771 system system
-    mkdir /tombstones/wcnss 0771 system system
-    mkdir /tombstones/dsps 0771 system system
-    mkdir /tombstones/mdm 0771 system system
+    mkdir /data/credmgr 0700 system system
+    mkdir /data/tombstones 0755 system system
+    mkdir /data/tombstones/vendor 0755 system system
+    mkdir /data/pc 0700 radio radio
 
     # Create directory used by audio subsystem
     mkdir /data/misc/audio 0770 audio audio
@@ -261,10 +269,21 @@ on post-fs-data
     # Create directories for gpsone_daemon services
     mkdir /data/misc/gpsone_d 0770 system gps
 
+    #Create directories for Location services
+    mkdir /data/misc/location 0770 gps gps
+    mkdir /data/misc/location/mq 0770 gps gps
+    mkdir /data/misc/location/xtwifi 0770 gps gps
+    mkdir /data/misc/location/gpsone_d 0770 system gps
+    mkdir /data/misc/location/quipc 0770 gps system
+    mkdir /data/misc/location/gsiff 0770 gps gps
+
     # Provide the access to hostapd.conf only to root and group
     chmod 0660 /data/hostapd/hostapd.conf
 
     mkdir /data/audio 0770 media audio
+
+    # Create /data/time folder for time-services
+    mkdir /data/time/ 0700 system system
 
     # kickstart
     mkdir /cache/qcks 0770 system system
@@ -452,6 +471,9 @@ on charger
     write /sys/devices/system/cpu/cpu3/online 0
     start mpdecision
 
+on property:init.svc.bootanim=stopped
+    write /sys/block/mmcblk0/queue/scheduler row
+
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
 
@@ -463,8 +485,10 @@ service irsc_util /system/bin/logwrapper /system/bin/irsc_util "/etc/sec_config"
 
 # Fast Dormancy
 service fast-dormancy /system/bin/fast-dormancy
-    class late_start
-    disabled
+    user root
+    group root inet net_raw net_admin
+    socket fastdorm stream 0660 system system
+    class main
 
 on property:ro.semc.enable.fast_dormancy=false
     stop fast-dormancy
@@ -491,9 +515,9 @@ on property:bluetooth.hciattach=false
 
 # QMUX must be in multiple groups to support external process connections
 service qmuxd /system/bin/qmuxd
-    class late_start
+    class main
     user radio
-    group radio audio bluetooth gps qcom_diag net_bt_stack
+    group radio audio bluetooth gps qcom_diag
     disabled
 
 service ks_checker /system/bin/sh /system/etc/kickstart_checker.sh
@@ -676,7 +700,7 @@ service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
     oneshot
 
 service illumination /system/bin/illumination_service
-    socket illumination stream 0660 root system
+    socket illumination stream 0666 root system
     class main
     user root
 
